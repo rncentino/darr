@@ -290,8 +290,12 @@ $(document).ready(function() {
             type: "GET",
             data: { page: page },
             success: function(response) {
+                console.log(response);  // Add this line to debug
                 $("#search-results").html(response.records);
                 $("#pagination").html(response.pagination);
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX Error:", status, error);  // Add this line to handle errors
             }
         });
     }
@@ -306,6 +310,7 @@ $(document).ready(function() {
         loadRecords(page);
     });
 });
+
 
 // add record
 $(document).ready(function() {

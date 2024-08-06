@@ -1,6 +1,6 @@
 <?php
 // Database connection
-require('db_conn.php');
+require('../components/db_conn.php');
 
 // Set the number of records per page
 $records_per_page = 10;
@@ -20,14 +20,14 @@ $total_records = $total_result->fetch_row()[0];
 $total_pages = ceil($total_records / $records_per_page);
 
 // Fetch records for the current page
-$query = "SELECT id, oct_tct_no, lot_no, survey_no, municipality, brgy, geodetic_engr, map FROM records LIMIT $offset, $records_per_page";
+$query = "SELECT id, OCT_TCT_no, lot_no, survey_no, municipality, brgy, geodetic_engr, map FROM records LIMIT $offset, $records_per_page";
 $result = $conn->query($query);
 
 $records = '';
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $records .= "<tr>";
-        $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['oct_tct_no']}</h6></td>";
+        $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['OCT_TCT_no']}</h6></td>";
         $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['lot_no']}</p></td>";
         $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['survey_no']}</p></td>";
         $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['municipality']}, {$row['brgy']}</p></td>";
@@ -77,5 +77,6 @@ if ($total_pages > 1) {
     }
 }
 
-echo json_encode(['records' => $records, 'pagination' => $pagination]);
-
+$response = ['records' => $records, 'pagination' => $pagination];
+echo json_encode($response);
+?>
