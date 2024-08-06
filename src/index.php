@@ -286,7 +286,7 @@ const Toast = Swal.mixin({
 $(document).ready(function() {
     function loadRecords(page) {
         $.ajax({
-            url: "record-fetch.php",
+            url: "backend/record-fetch.php",
             type: "GET",
             data: { page: page },
             success: function(response) {
@@ -313,7 +313,7 @@ $(document).ready(function() {
         e.preventDefault(); 
 
         $.ajax({
-            url: 'record-add.php',
+            url: 'backend/record-add.php',
             type: 'POST', 
             data: new FormData(this), 
             contentType: false,

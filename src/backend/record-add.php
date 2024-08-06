@@ -1,6 +1,5 @@
 <?php
-// Include the database connection
-require_once("db_conn.php");
+require("../components/db_conn.php");
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -19,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Save the uploaded map (PDF file)
     $map = $_FILES["map"]["name"];
-    $target_dir = "uploads/";
+    $target_dir = "../uploads/";
     $target_file = $target_dir . basename($map);
     move_uploaded_file($_FILES["map"]["tmp_name"], $target_file);
 
