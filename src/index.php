@@ -104,152 +104,93 @@ $user_count = $user_result->fetch_assoc()['user_count'];
                       </div>
                   </div>
               </div>
-          </div>
+            </div>
 
 
 
 
 
 
-            <!-- list -->
-            <div class="row">
-              <div class="container-fluid">
-                <div class="card">
-                  <div class="card-body">
-                  <div class="d-flex justify-content-between align-items-center mb-4">
+            <!-- record list -->
+            
+<div class="row">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="card-title fw-semibold">Manage Records</h5>
                     <div class="d-flex align-items-center">
-                      <!-- Search Bar -->
-                      <div class="mx-3">
-                        <form class="d-flex">
-                            <div class="input-group">
-                                <input type="text" id="search" class="form-control" placeholder="Search...">
-                                <button type="button" class="btn btn-success" aria-label="Search">
-                                    <i class="ti ti-search"></i>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                      <!-- Add Record Button -->
-                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRecordModal">
-                        <i class="ti ti-plus"></i> Add Record
-                      </button>
-                    </div>
-                  </div>
-
-                    <div class="row" id="recordTable">
-                      <div class="col-lg-12 d-flex align-items-stretch">
-                        <div class="card w-100">
-                          <div class="card-body p-4">
-                            <div class="table-responsive">
-                            <table class="table text-nowrap mb-0 align-middle table-striped">
-
-                                <thead class="text-dark fs-4">
-                                  <tr>
-                                    <th class="border-bottom-0">
-                                      <h6 class="fw-semibold mb-0">OTC/TCT</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                      <h6 class="fw-semibold mb-0">Lot No.</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                      <h6 class="fw-semibold mb-0">Survey No.</h6>
-                                    </th>
-                                    <!-- <th class="border-bottom-0">
-                                      <h6 class="fw-semibold mb-0">Survey Type</h6>
-                                    </th> -->
-                                    <!-- <th class="border-bottom-0">
-                                      <h6 class="fw-semibold mb-0">Sheet No.</h6>
-                                    </th> -->
-                                    <!-- <th class="border-bottom-0">
-                                      <h6 class="fw-semibold mb-0">Area</h6>
-                                    </th> -->
-                                    <th class="border-bottom-0">
-                                      <h6 class="fw-semibold mb-0">Location </h6>
-                                      <!-- <span class="fw-normal"><i>( Municipality, Brgy. )<i></span> -->
-                                    </th>
-                                    <!-- <th class="border-bottom-0">
-                                      <h6 class="fw-semibold mb-0">Land Owner</h6>
-                                    </th> -->
-                                    <th class="border-bottom-0">
-                                      <h6 class="fw-semibold mb-0">Geodetic Engr.</h6>
-                                    </th>
-                                    <!-- <th class="border-bottom-0">
-                                      <h6 class="fw-semibold mb-0">Date Approved</h6>
-                                    </th> -->
-                                    
-                                    <!-- <th class="border-bottom-0">
-                                      <h6 class="fw-semibold mb-0">Upload at</h6>
-                                    </th> -->
-                                    <th class="border-bottom-0">
-                                      <h6 class="fw-semibold mb-0">Map</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                      <h6 class="fw-semibold mb-0">Actions</h6>
-                                    </th>
-                                    
-                                  </tr>
-                                </thead>
-                                <tbody id="search-results">
-                                  <?php
-                                    $query = "SELECT id, oct_tct_no, lot_no, survey_no, sheet_no, area, date_approved, municipality, brgy, land_owner, geodetic_engr, survey_type, uploaded_at, map FROM records";
-                                    $result = $conn->query($query);
-
-                                    if ($result->num_rows > 0) {
-                                      while ($row = $result->fetch_assoc()) {
-                                          echo "<tr>";
-                                          echo "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['oct_tct_no']}</h6></td>";
-                                          echo "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['lot_no']}</p></td>";
-                                          echo "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['survey_no']}</p></td>";
-                                          // echo "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['survey_type']}</p></td>";
-                                          // echo "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['sheet_no']}</p></td>";
-                                          // echo "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['area']}</p></td>";
-                                          echo "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['municipality']}, {$row['brgy']}</p></td>";
-                                          // echo "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['land_owner']}</p></td>";
-                                          echo "<td class='border-bottom-0'><p class='mb-0 fw-normal'>Engr. {$row['geodetic_engr']}</p></td>";
-                                          // echo "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['date_approved']}</p></td>";
-                                          
-                                          // echo "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['user_id']}</p></td>";
-                                          // echo "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['uploaded_at']}</p></td>";
-                                          echo "<td class='border-bottom-0'><p class='mb-0 fw-normal'>
-                                              <button href='uploads/{$row['map']}' class='btn btn-primary view-pdf-btn' data-bs-toggle='modal' data-bs-target='#viewPDFModal'>
-                                                        <i class='ti ti-file-text'></i>
-                                              </button>
-                                             <button href='uploads/{$row['map']}' class='btn btn-success view-pdf-btn' data-bs-toggle='modal' data-bs-target='#viewImgModal'>
-                                                        <i class='ti ti-photo'></i>
-                                              </button>
-                                               
-                                                </td>";
-                                          
-                                          echo "<td class='border-bottom-0'> 
-                                               <button class='btn btn-secondary' data-bs-toggle='modal' data-bs-target='#editRecordModal' onclick='editRecord({$row['id']})'>
-                                                <i class='ti ti-eye'></i>
-                                              </button>
-                                                                                                           
-                                              <button class='btn btn-warning' data-bs-toggle='modal' data-bs-target='#editRecordModal' onclick='editRecord({$row['id']})'>
-                                                <i class='ti ti-edit'></i>
-                                              </button>
-                                              <button class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#deleteRecordModal' onclick='deleteRecord({$row['id']})'>
-                                                <i class='ti ti-trash'></i>
-                                              </button>
-                                          </td>";
-                                          echo "</tr>";
-                                      }
-                                    } else {
-                                      echo "<tr><td colspan='15' class='border-bottom-0'><h6 class='fw-semibold mb-0 text-center'>No data available</h6></td></tr>";
-                                    }
-                                  ?>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
+                        <!-- Search Bar -->
+                        <div class="mx-3">
+                            <form class="d-flex" action="record-search.php" method="get">
+                                <div class="input-group">
+                                    <input type="text" id="search" name="q" class="form-control" placeholder="Search...">
+                                    <button type="submit" class="btn btn-success" aria-label="Search" disabled>
+                                        <i class="ti ti-search"></i>
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                      </div>
+
+                        <!-- Add Record Button -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRecordModal">
+                            <i class="ti ti-plus"></i> Add Record
+                        </button>
                     </div>
-                  </div>
                 </div>
-              </div>
+
+                <div class="row" id="recordTable">
+                    <div class="col-lg-12 d-flex align-items-stretch">
+                        <div class="card w-100">
+                            <div class="card-body p-4">
+                                <div class="table-responsive">
+                                    <table class="table text-nowrap mb-0 align-middle table-striped">
+                                        <thead class="text-dark fs-4">
+                                            <tr>
+                                                <th class="border-bottom-0">
+                                                    <h6 class="fw-semibold mb-0">OTC/TCT</h6>
+                                                </th>
+                                                <th class="border-bottom-0">
+                                                    <h6 class="fw-semibold mb-0">Lot No.</h6>
+                                                </th>
+                                                <th class="border-bottom-0">
+                                                    <h6 class="fw-semibold mb-0">Survey No.</h6>
+                                                </th>
+                                                <th class="border-bottom-0">
+                                                    <h6 class="fw-semibold mb-0">Location</h6>
+                                                </th>
+                                                <th class="border-bottom-0">
+                                                    <h6 class="fw-semibold mb-0">Geodetic Engr.</h6>
+                                                </th>
+                                                <th class="border-bottom-0">
+                                                    <h6 class="fw-semibold mb-0">Map</h6>
+                                                </th>
+                                                <th class="border-bottom-0">
+                                                    <h6 class="fw-semibold mb-0">Actions</h6>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="search-results">
+                                            <!-- Records will be loaded here via AJAX -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end" id="pagination">
+                        <!-- Pagination links will be loaded here via AJAX -->
+                    </ul>
+                </nav>
+
             </div>
+        </div>
+    </div>
+</div>
           </div>
         </div>
       </div>
@@ -387,10 +328,6 @@ $user_count = $user_result->fetch_assoc()['user_count'];
       <!-- End View Record Modal -->
 
 
-      <!-- View Record Modal -->
-
-      <!-- End View Record Modal  -->
-
       <!-- Edit Record Modal -->
       <div class="modal fade" id="editRecordModal" tabindex="-1" aria-labelledby="editRecordModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -440,11 +377,37 @@ const Toast = Swal.mixin({
 
 
 $(document).ready(function() {
+    // Function to load records
+    function loadRecords(page) {
+        $.ajax({
+            url: "record-fetch.php",
+            type: "GET",
+            data: { page: page },
+            success: function(response) {
+                $("#search-results").html(response.records);
+                $("#pagination").html(response.pagination);
+            }
+        });
+    }
+
+    // Initial load
+    loadRecords(1);
+
+    // Handle pagination click
+    $(document).on("click", ".page-link", function(e) {
+        e.preventDefault();
+        var page = $(this).data("page");
+        loadRecords(page);
+    });
+});
+
+// add record
+$(document).ready(function() {
     $('#addRecordForm').submit(function(e) {
         e.preventDefault(); 
 
         $.ajax({
-            url: 'add-record.php',
+            url: 'record-add.php',
             type: 'POST', 
             data: new FormData(this), 
             contentType: false,
@@ -498,6 +461,9 @@ $(document).ready(function() {
     });
 });
 
+// edit record
+
+
 
 // search function
 document.addEventListener('DOMContentLoaded', function() {
@@ -507,8 +473,8 @@ document.addEventListener('DOMContentLoaded', function() {
     searchInput.addEventListener('input', function() {
         const query = searchInput.value;
 
-        if (query.length > 0) { 
-            fetch('search-record.php?q=' + encodeURIComponent(query))
+        if (query.length > 5) { 
+            fetch('record-search.php?q=' + encodeURIComponent(query))
                 .then(response => response.text())
                 .then(data => {
                     searchResults.innerHTML = data;
