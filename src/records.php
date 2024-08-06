@@ -49,6 +49,7 @@ include('components/header.php');
                                 </div>
                             </div>
 
+
                             <div class="row" id="recordTable">
                                 <div class="col-lg-12 d-flex align-items-stretch">
                                     <div class="card w-100">
@@ -82,6 +83,7 @@ include('components/header.php');
                                                     </thead>
                                                     <tbody id="search-results">
                                                         <!-- Records will be loaded here via AJAX -->
+                                                         <!-- but it is not redering -->
                                                     </tbody>
                                                 </table>
                                             </div>

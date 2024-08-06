@@ -20,14 +20,14 @@ $total_records = $total_result->fetch_row()[0];
 $total_pages = ceil($total_records / $records_per_page);
 
 // Fetch records for the current page
-$query = "SELECT id, OCT_TCT_no, lot_no, survey_no, municipality, brgy, geodetic_engr, map FROM records LIMIT $offset, $records_per_page";
+$query = "SELECT id, oct_tct_no, lot_no, survey_no, sheet_no, area, date_approved, municipality, brgy, land_owner, geodetic_engr, survey_type, uploaded_at, map FROM records LIMIT $offset, $records_per_page";
 $result = $conn->query($query);
 
 $records = '';
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $records .= "<tr>";
-        $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['OCT_TCT_no']}</h6></td>";
+        $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['oct_tct_no']}</h6></td>";
         $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['lot_no']}</p></td>";
         $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['survey_no']}</p></td>";
         $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['municipality']}, {$row['brgy']}</p></td>";
@@ -36,7 +36,7 @@ if ($result->num_rows > 0) {
             <button href='uploads/{$row['map']}' class='btn btn-primary view-pdf-btn' data-bs-toggle='modal' data-bs-target='#viewPDFModal'>
                 <i class='ti ti-file-text'></i>
             </button>
-            <button href='uploads/{$row['map']}' class='btn btn-success view-pdf-btn' data-bs-toggle='modal' data-bs-target='#viewImgModal'>
+            <button href='../uploads/uploads/{$row['map']}' class='btn btn-success view-pdf-btn' data-bs-toggle='modal' data-bs-target='#viewImgModal'>
                 <i class='ti ti-photo'></i>
             </button>
         </td>";
