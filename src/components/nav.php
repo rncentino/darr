@@ -10,15 +10,17 @@
     
       </div>
 
-      
+      <!-- Center Part -->
+      <!-- 
+        -Home Button
+        -Records Button
+        -About Button
+       -->
 
       <!-- Right Side of Navbar -->
       <div class="d-flex align-items-center ms-auto">
         <!-- Centered Search Bar -->
          
-       
-
-        
         <!-- User Profile Dropdown -->
         <ul class="navbar-nav flex-row align-items-center">
           <li class="nav-item dropdown">

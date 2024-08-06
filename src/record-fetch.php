@@ -78,4 +78,4 @@ if ($total_pages > 1) {
 }
 
 echo json_encode(['records' => $records, 'pagination' => $pagination]);
-?>
+

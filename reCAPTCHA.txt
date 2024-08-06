@@ -1,4 +1,0 @@
-Label : NSC-library
-
-Site key: 6LdXUO8pAAAAAPSkFxAPprGKFpvlP31tmytmvFMP
-Secret Key: 6LdXUO8pAAAAAJESUo4IeZindE96h5a1j1MbXNj7

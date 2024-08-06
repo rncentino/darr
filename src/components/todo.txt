@@ -1,0 +1,12 @@
+Navigations
+    -Home
+    -Records
+    -About
+
+Crud Operations
+    -Fetch Record (fix fetching)
+    -View
+    -Edit
+    -Delete
+
+Leaflet file Layer

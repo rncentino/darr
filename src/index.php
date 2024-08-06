@@ -1,201 +1,110 @@
 <?php 
 session_start();
-require("db_conn.php");
-include('header.php'); 
-// include('auth.php');
+require("components/db_conn.php");
+include('components/header.php'); 
+// include('components/auth.php');
 
-
-// no of files
-$file_count_query = "SELECT COUNT(*) AS file_count FROM records";
-$file_result = $conn->query($file_count_query);
-$file_count = $file_result->fetch_assoc()['file_count'];
-
-// no of records
-$record_count_query = "SELECT COUNT(*) AS record_count FROM records";
-$record_result = $conn->query($record_count_query);
-$record_count = $record_result->fetch_assoc()['record_count'];
-
-// no of users
-$user_count_query = "SELECT COUNT(*) AS user_count FROM users";
-$user_result = $conn->query($user_count_query);
-$user_count = $user_result->fetch_assoc()['user_count'];
 ?>
 
 <body>
-
-
   <!-- Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper">
     <!-- Main wrapper -->
     <div class="body-wrapper">
 
       <!-- Header Start -->
-      <?php include('nav.php') ?>
+      <?php include('components/nav.php') ?>
       <!-- Header End -->
 
       <!-- Tables Section-->
       <div class="container-fluid">
         <div class="card bg-secondary-subtle">
           <div class="card-body">
-            <h2 class="fw-bold mb-4 p-3 border-bottom border-success border-3">DAR SURVEY TEAM DMS</h2>
-
-            <!-- stats record -->
-            <div class="row" id="countTable">
-              <div class="col-md-4">
-                  <div class="card card-stats card-round">
-                      <div class="card-body">
-                          <div class="row align-items-center">
-                              <div class="col-auto">
-                                  <div class="bg-primary rounded-2 p-4 d-flex align-items-center justify-content-center">
-                                      <i class="ti ti-files text-white" style="font-size: 1rem;"></i>
-                                  </div>
-                              </div>
-                              <div class="col ms-3">
-                                  <div class="numbers">
-                                      <p class="card-category">Files</p>
-                                      <h4 class="card-title">
-                                          <?php echo $file_count; ?>
-                                      </h4>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-md-4">
-                  <div class="card card-stats card-round">
-                      <div class="card-body">
-                          <div class="row align-items-center">
-                              <div class="col-auto">
-                                  <div class="bg-success rounded-2 p-4 d-flex align-items-center justify-content-center">
-                                      <i class="ti ti-folders text-white" style="font-size: 1rem;"></i>
-                                  </div>
-                              </div>
-                              <div class="col ms-3">
-                                  <div class="numbers">
-                                      <p class="card-category">Record</p>
-                                      <h4 class="card-title">
-                                          <?php echo $record_count; ?>
-                                      </h4>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-md-4">
-                  <div class="card card-stats card-round">
-                      <div class="card-body">
-                          <div class="row align-items-center">
-                              <div class="col-auto">
-                                  <div class="bg-warning rounded-2 p-4 d-flex align-items-center justify-content-center">
-                                      <i class="ti ti-users text-white" style="font-size: 1rem;"></i>
-                                  </div>
-                              </div>
-                              <div class="col ms-3">
-                                  <div class="numbers">
-                                      <p class="card-category">Users</p>
-                                      <h4 class="card-title">
-                                          <?php echo $user_count; ?>
-                                      </h4>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-            </div>
-
-
-
-
-
+            <h2 class="fw-bold mb-4 p-3 border-bottom border-success border-3">DAR Survey Team Dashboard</h2>
 
             <!-- record list -->
-            
-<div class="row">
-    <div class="container-fluid">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="card-title fw-semibold">Manage Records</h5>
-                    <div class="d-flex align-items-center">
-                        <!-- Search Bar -->
-                        <div class="mx-3">
-                            <form class="d-flex" action="record-search.php" method="get">
-                                <div class="input-group">
-                                    <input type="text" id="search" name="q" class="form-control" placeholder="Search...">
-                                    <button type="submit" class="btn btn-success" aria-label="Search" disabled>
-                                        <i class="ti ti-search"></i>
+            <div class="row">
+                <div class="container-fluid">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="card-title fw-semibold">Manage Records</h5>
+                                <div class="d-flex align-items-center">
+                                    <!-- Search Bar -->
+                                    <div class="mx-3">
+                                        <form class="d-flex" action="record-search.php" method="get">
+                                            <div class="input-group">
+                                                <input type="text" id="search" name="q" class="form-control" placeholder="Search...">
+                                                <button type="submit" class="btn btn-success" aria-label="Search" disabled>
+                                                    <i class="ti ti-search"></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <!-- Add Record Button -->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRecordModal">
+                                        <i class="ti ti-plus"></i> Add Record
                                     </button>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
 
-                        <!-- Add Record Button -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRecordModal">
-                            <i class="ti ti-plus"></i> Add Record
-                        </button>
-                    </div>
-                </div>
-
-                <div class="row" id="recordTable">
-                    <div class="col-lg-12 d-flex align-items-stretch">
-                        <div class="card w-100">
-                            <div class="card-body p-4">
-                                <div class="table-responsive">
-                                    <table class="table text-nowrap mb-0 align-middle table-striped">
-                                        <thead class="text-dark fs-4">
-                                            <tr>
-                                                <th class="border-bottom-0">
-                                                    <h6 class="fw-semibold mb-0">OTC/TCT</h6>
-                                                </th>
-                                                <th class="border-bottom-0">
-                                                    <h6 class="fw-semibold mb-0">Lot No.</h6>
-                                                </th>
-                                                <th class="border-bottom-0">
-                                                    <h6 class="fw-semibold mb-0">Survey No.</h6>
-                                                </th>
-                                                <th class="border-bottom-0">
-                                                    <h6 class="fw-semibold mb-0">Location</h6>
-                                                </th>
-                                                <th class="border-bottom-0">
-                                                    <h6 class="fw-semibold mb-0">Geodetic Engr.</h6>
-                                                </th>
-                                                <th class="border-bottom-0">
-                                                    <h6 class="fw-semibold mb-0">Map</h6>
-                                                </th>
-                                                <th class="border-bottom-0">
-                                                    <h6 class="fw-semibold mb-0">Actions</h6>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="search-results">
-                                            <!-- Records will be loaded here via AJAX -->
-                                        </tbody>
-                                    </table>
+                            <div class="row" id="recordTable">
+                                <div class="col-lg-12 d-flex align-items-stretch">
+                                    <div class="card w-100">
+                                        <div class="card-body p-4">
+                                            <div class="table-responsive">
+                                                <table class="table text-nowrap mb-0 align-middle table-striped">
+                                                    <thead class="text-dark fs-4">
+                                                        <tr>
+                                                            <th class="border-bottom-0">
+                                                                <h6 class="fw-semibold mb-0">OTC/TCT</h6>
+                                                            </th>
+                                                            <th class="border-bottom-0">
+                                                                <h6 class="fw-semibold mb-0">Lot No.</h6>
+                                                            </th>
+                                                            <th class="border-bottom-0">
+                                                                <h6 class="fw-semibold mb-0">Survey No.</h6>
+                                                            </th>
+                                                            <th class="border-bottom-0">
+                                                                <h6 class="fw-semibold mb-0">Location</h6>
+                                                            </th>
+                                                            <th class="border-bottom-0">
+                                                                <h6 class="fw-semibold mb-0">Geodetic Engr.</h6>
+                                                            </th>
+                                                            <th class="border-bottom-0">
+                                                                <h6 class="fw-semibold mb-0">Map</h6>
+                                                            </th>
+                                                            <th class="border-bottom-0">
+                                                                <h6 class="fw-semibold mb-0">Actions</h6>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="search-results">
+                                                        <!-- Records will be loaded here via AJAX -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
+                            <!-- Pagination -->
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-end" id="pagination">
+                                    <!-- Pagination links will be loaded here via AJAX -->
+                                </ul>
+                            </nav>
+
                         </div>
                     </div>
                 </div>
-
-                <!-- Pagination -->
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-end" id="pagination">
-                        <!-- Pagination links will be loaded here via AJAX -->
-                    </ul>
-                </nav>
-
             </div>
-        </div>
-    </div>
-</div>
+
           </div>
         </div>
       </div>
-
-     
 
       <!-- Modals -->
 
@@ -349,20 +258,18 @@ $user_count = $user_result->fetch_assoc()['user_count'];
 
       <!-- Delete Record Modal -->
       <!-- End Record Modal  -->
-
-      
-
-
       
     </div>
   </div>
 
 </body>
 
-<?php include('scripts.php') ?>
 
+<!-- scripts -->
+<?php include('components/scripts.php') ?>
 <script>
 
+//sweet alert toast
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -375,9 +282,8 @@ const Toast = Swal.mixin({
   }
 });
 
-
+// fetch record
 $(document).ready(function() {
-    // Function to load records
     function loadRecords(page) {
         $.ajax({
             url: "record-fetch.php",
@@ -462,7 +368,6 @@ $(document).ready(function() {
 });
 
 // edit record
-
 
 
 // search function
