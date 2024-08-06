@@ -1,8 +1,13 @@
+Push Instructions
+    -git add .
+    -git commit -m "msg"
+    -git push origin main
+
 Navigations
     -Home
     -Records
     -About
-
+    
 Crud Operations
     -Fetch Record (fix fetching)
     -View
