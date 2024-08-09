@@ -20,7 +20,7 @@ include('components/header.php');
       <div class="container-fluid">
         <div class="card bg-secondary-subtle">
           <div class="card-body">
-            <h2 class="fw-bold mb-4 p-3 border-bottom border-success border-3">DAR Survey Team Dashboard</h2>
+            <h2 class="fw-bold mb-4 p-3 border-bottom border-success border-3">DAR Survey Team Records</h2>
 
             <!-- record list -->
             <div class="row">
@@ -182,24 +182,7 @@ include('components/header.php');
       </div>
       <!-- End Add Record Modal -->
 
-      <!-- View PDF Modal -->
-      <div class="modal fade" id="viewPDFModal" tabindex="-1" aria-labelledby="viewPDFModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="viewPDFModalLabel">PDF Viewer</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div id="pdfViewer" class="pdf-viewer-container">
-                <!-- PDF Here -->
-              </div>
-            </div>
-            
-          </div>
-        </div>
-      </div>
-      <!-- End View PDF Modal -->
+      
 
       <!-- View Img Modal (to be implemented)-->
       <div class="modal fade" id="viewImgModal" tabindex="-1" aria-labelledby="viewImgModalLabel" aria-hidden="true">
@@ -284,36 +267,6 @@ const Toast = Swal.mixin({
   }
 });
 
-// fetch record
-$(document).ready(function() {
-    function loadRecords(page) {
-        $.ajax({
-            url: "backend/record-fetch.php",
-            type: "GET",
-            data: { page: page },
-            success: function(response) {
-                console.log(response);  // Add this line to debug
-                $("#search-results").html(response.records);
-                $("#pagination").html(response.pagination);
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error:", status, error);  // Add this line to handle errors
-            }
-        });
-    }
-
-    // Initial load
-    loadRecords(1);
-
-    // Handle pagination click
-    $(document).on("click", ".page-link", function(e) {
-        e.preventDefault();
-        var page = $(this).data("page");
-        loadRecords(page);
-    });
-});
-
-
 // add record
 $(document).ready(function() {
     $('#addRecordForm').submit(function(e) {
@@ -377,25 +330,48 @@ $(document).ready(function() {
 // edit record
 
 
-// search function
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('search');
-    const searchResults = document.getElementById('search-results');
+$(document).ready(function() {
+    function loadRecords(page, query = '') {
+        $.ajax({
+            url: "backend/record-fetch.php",
+            type: "GET",
+            data: { page: page, q: query },
+            success: function(response) {
+                // Ensure response is parsed as JSON
+                if (typeof response === 'string') {
+                    response = JSON.parse(response);
+                }
+                // Update the table and pagination
+                $("#search-results").html(response.records);
+                $("#pagination").html(response.pagination);
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX Error:", status, error);  // Handle errors
+            }
+        });
+    }
 
-    searchInput.addEventListener('input', function() {
-        const query = searchInput.value;
+    // Initial load
+    loadRecords(1);
 
-        if (query.length > 5) { 
-            fetch('record-search.php?q=' + encodeURIComponent(query))
-                .then(response => response.text())
-                .then(data => {
-                    searchResults.innerHTML = data;
-                })
-                .catch(error => console.error('Error:', error));
+    // Handle pagination click
+    $(document).on("click", ".page-link", function(e) {
+        e.preventDefault();
+        var page = $(this).data("page");
+        var query = $('#search').val();  // Get the current search query
+        loadRecords(page, query);
+    });
+
+    // Handle search input
+    $('#search').on('input', function() {
+        var query = $(this).val();
+        if (query.length > 3) {
+            loadRecords(1, query);  // Load records with the search query
         } else {
-            searchResults.innerHTML = '';
+            loadRecords(1);  // Load all records if the search query is too short
         }
     });
 });
+
 
 </script>

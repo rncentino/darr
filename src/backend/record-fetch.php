@@ -1,42 +1,51 @@
 <?php
-// Database connection
 require('../components/db_conn.php');
 
-// Set the number of records per page
-$records_per_page = 10;
-
-// Get the current page number from the URL, default is 1
+// Get the current page and search query from the request
+$records_per_page = 5;
 $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-
-// Calculate the offset for the SQL query
 $offset = ($current_page - 1) * $records_per_page;
+$searchQuery = isset($_GET['q']) ? $conn->real_escape_string($_GET['q']) : '';
 
-// Get the total number of records
-$total_query = "SELECT COUNT(*) FROM records";
+// Base query
+$query = "SELECT id, oct_tct_no, lot_no, survey_no, sheet_no, area, date_approved, municipality, brgy, land_owner, geodetic_engr, survey_type, uploaded_at, map FROM records";
+
+// If there's a search query, modify the query to filter results
+if (!empty($searchQuery)) {
+    $query .= " WHERE oct_tct_no LIKE '%$searchQuery%' 
+                OR lot_no LIKE '%$searchQuery%' 
+                OR survey_no LIKE '%$searchQuery%' 
+                OR municipality LIKE '%$searchQuery%' 
+                OR brgy LIKE '%$searchQuery%' 
+                OR land_owner LIKE '%$searchQuery%' 
+                OR geodetic_engr LIKE '%$searchQuery%'";
+}
+
+// Fetch the total number of records
+$total_query = "SELECT COUNT(*) FROM ($query) AS total";
 $total_result = $conn->query($total_query);
 $total_records = $total_result->fetch_row()[0];
-
-// Calculate the total number of pages
 $total_pages = ceil($total_records / $records_per_page);
 
-// Fetch records for the current page
-$query = "SELECT id, oct_tct_no, lot_no, survey_no, sheet_no, area, date_approved, municipality, brgy, land_owner, geodetic_engr, survey_type, uploaded_at, map FROM records LIMIT $offset, $records_per_page";
+// Add LIMIT to the query for pagination
+$query .= " LIMIT $offset, $records_per_page";
+
 $result = $conn->query($query);
 
 $records = '';
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $records .= "<tr>";
-        $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['oct_tct_no']}</h6></td>";
+        $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['oct_tct_no']}</p></td>";
         $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['lot_no']}</p></td>";
         $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['survey_no']}</p></td>";
         $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>{$row['municipality']}, {$row['brgy']}</p></td>";
         $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>Engr. {$row['geodetic_engr']}</p></td>";
-        $records .= "<td class='border-bottom-0'><p class='mb-0 fw-normal'>
-            <button href='uploads/{$row['map']}' class='btn btn-primary view-pdf-btn' data-bs-toggle='modal' data-bs-target='#viewPDFModal'>
+        $records .= "<td class='border-bottom-0'>
+            <button href='../uploads/{$row['map']}' class='btn btn-primary view-pdf-btn' data-bs-toggle='modal' data-bs-target='#viewPDFModal'>
                 <i class='ti ti-file-text'></i>
             </button>
-            <button href='../uploads/uploads/{$row['map']}' class='btn btn-success view-pdf-btn' data-bs-toggle='modal' data-bs-target='#viewImgModal'>
+            <button href='../uploads/{$row['map']}' class='btn btn-success view-pdf-btn' data-bs-toggle='modal' data-bs-target='#viewImgModal'>
                 <i class='ti ti-photo'></i>
             </button>
         </td>";
@@ -54,10 +63,10 @@ if ($result->num_rows > 0) {
         $records .= "</tr>";
     }
 } else {
-    $records .= "<tr><td colspan='15' class='border-bottom-0'><h6 class='fw-semibold mb-0 text-center'>No data available</h6></td></tr>";
+    $records .= "<tr><td colspan='7' class='border-bottom-0'><h6 class='fw-semibold mb-0 text-center'>No data available</h6></td></tr>";
 }
 
-// Generate pagination links
+// Generate pagination HTML
 $pagination = '';
 if ($total_pages > 1) {
     if ($current_page > 1) {
@@ -77,6 +86,8 @@ if ($total_pages > 1) {
     }
 }
 
+// Return the response as JSON
 $response = ['records' => $records, 'pagination' => $pagination];
+header('Content-Type: application/json');
 echo json_encode($response);
-?>
+
